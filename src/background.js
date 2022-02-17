@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, protocol, BrowserWindow } from 'electron'
+import { app, protocol, BrowserWindow, dialog } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 const isDevelopment = process.env.NODE_ENV !== 'production'
@@ -11,6 +11,7 @@ protocol.registerSchemesAsPrivileged([
 ])
 
 async function createWindow() {
+  console.log(process.versions);
   // Create the browser window.
   const win = new BrowserWindow({
     width: 800,
@@ -63,6 +64,23 @@ app.on('ready', async () => {
     }
   }
   createWindow()
+})
+
+app.on('close', (e)=>{
+  e.preventDefault();
+  dialog.showMessageBox({
+    type: 'warning',
+    title: 'info tips',
+    message: 'Do you want to close the application?',
+    buttons:['取消', '确认'],
+  },(idx)=>{
+    if(idx == 0) {
+      e.preventDefault();
+    }else{
+      app = null
+      app.exit()
+    }
+  })
 })
 
 // Exit cleanly on request from parent process in development mode.
