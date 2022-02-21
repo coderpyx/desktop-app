@@ -1,6 +1,35 @@
 'use strict'
 
 import { app, protocol, BrowserWindow, dialog } from 'electron'
+// ---------------------------------------------------------------------------
+
+var path = require("path");
+var fs = require("fs");
+var dirs = [];
+console.log(__dirname);
+var pathName = "C:/Users/吴/Desktop/审核辅助视频";
+fs.readdir(pathName, function(err, files){
+  console.log(files);
+  let imgSrcList = [];
+    for (var i=0; i<files.length; i++) {
+      //  fs.stat(path.join(pathName, files[i]), function(err, data){
+      //    console.log(data);
+      //       if(data.isFile())
+      //       {               
+      //           dirs.push(files[i]);
+      //       }
+      //   });
+      console.log(`${pathName}/${files[i]}`);
+      fs.readFileSync(`${pathName}/${files[i]}`,(err, data)=>{
+        imgSrcList.push("data:image/jpg;base64," + data.toString('base64'));
+      })
+      console.log(imgSrcList[0]);
+    }
+    console.log(dirs);
+
+})
+
+// ---------------------------------------------------------------------------
 
 const { autoUpdater } = require('electron-updater')
 
